@@ -2,8 +2,10 @@ package programa;
 
 import java.util.Scanner;
 
-import registro.*;
-import dados.*;
+import registro.RegistroLivro;
+import registro.RegistroUsuario;
+import dados.Usuario;
+import dados.Livro;
 
 public class Main {
 	
@@ -64,7 +66,7 @@ public class Main {
 	
 	private static void listarTodosLivros() {
 		System.out.println("=== Lista de livros disponiveis ===");
-		System.out.println("Cod\t Titulo\t\t\t Autor\t\t Valor\t\t Situacao\t\t Colega" );
+		System.out.println("Cod\t Titulo\t\t\t Autor\t\t Valor\t\t Situacao\t\t Usuario" );
 		for (int i = 0; i < rL.size(); i++) {
 			Livro l = rL.getLivro(i);
 			if(l.getDataEmprestimo()==null){
@@ -88,7 +90,7 @@ public class Main {
 		sc.nextLine();
 		Main.listarTodosUsuarios();
 		System.out.println();
-		System.out.print("Digite o codigo do colega a emprestar o livro:");
+		System.out.print("Digite o codigo do usuario a emprestar o livro:");
 		codUsuario = sc.nextInt();
 		sc.nextLine();
 		for (int i = 0; i < rU.size(); i++) {
@@ -99,7 +101,7 @@ public class Main {
 				Livro l = rL.getLivro(i1);
 				if(l.getCodigoDoLivro()==cod&&l.getDataEmprestimo()==null){
 				rL.emprestaLivro(l,usuario);
-				System.out.println("livro codigo "+l.getCodigoDoLivro()+" emprestado com sucesso para o colega: " + usuario.getNome() + ".");
+				System.out.println("livro codigo "+l.getCodigoDoLivro()+" emprestado com sucesso para o usuario: " + usuario.getNome() + ".");
 				System.out.println("Data de emprestimo: "+l.getDataEmprestimo());
 				flag=true;
 				}
