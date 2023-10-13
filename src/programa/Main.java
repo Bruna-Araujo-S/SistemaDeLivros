@@ -52,10 +52,10 @@ public class Main {
 		}
 	}
 	
-	private static void listarTodosColegas() {
+	private static void listarTodosUsuarios() {
 		System.out.println("=== Lista de Usuario ===");
 		System.out.println("Cod\t Nome\t\t\t Telefone" );
-		for (int i = 0; i < rC.size(); i++) {
+		for (int i = 0; i < rU.size(); i++) {
 			Usuario u = rU.getUsuario(i);
 			System.out.printf ("%s\t %s\t\t  %s\n",
 					u.getCodigoDoUsuario(), u.getNome(), u.getTelefone());
@@ -86,8 +86,7 @@ public class Main {
 		System.out.print("Digite o codigo do livro a ser emprestado:");
 		cod = sc.nextInt();
 		sc.nextLine();
-        
-		Main.listarTodosUsuario();
+		Main.listarTodosUsuarios();
 		System.out.println();
 		System.out.print("Digite o codigo do colega a emprestar o livro:");
 		codUsuario = sc.nextInt();
@@ -117,10 +116,7 @@ public class Main {
 		
 	}
 	
-	private static void listarTodosUsuario() {
-    }
-
-    private static void devolverLivro() {
+	private static void devolverLivro() {
 		boolean flag=false;
 		int cod;
 		System.out.print("Digite o codigo do livro a ser devolvido:");
