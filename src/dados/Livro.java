@@ -1,4 +1,4 @@
-package src.dados;
+package dados;
 
 import java.time.LocalDateTime;
 
@@ -70,6 +70,9 @@ public class Livro implements Comparable<Livro>{
 	public int compareTo(Livro l) {
 		return this.titulo.compareToIgnoreCase(l.getTitulo());
 	}
+
+    public void setUsuarioComLivro(Usuario usuario) {
+    }
 	
 
 }
