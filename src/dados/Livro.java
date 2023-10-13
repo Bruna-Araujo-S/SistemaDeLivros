@@ -59,20 +59,17 @@ public class Livro implements Comparable<Livro>{
 		this.dataEmprestimo = dataEmprestimo;
 	}
 
-	public String getColegaComLivro() {
+	public String getUsuarioComLivro() {
 		return usuarioComLivro.getNome();
 	}
 
-	public void setColegaComLivro(Usuario colegaComLivro) {
-		this.usuarioComLivro = colegaComLivro;
+	public void setUsuarioComLivro(Usuario usuarioComLivro) {
+		this.usuarioComLivro = usuarioComLivro;
 	}
 	
 	public int compareTo(Livro l) {
 		return this.titulo.compareToIgnoreCase(l.getTitulo());
 	}
-
-    public void setUsuarioComLivro(Usuario usuario) {
-    }
 	
 
 }

@@ -73,7 +73,7 @@ public class Main {
 			}
 			else{
 			System.out.printf ("%s\t %s\t\t  %s\t\t\t %s\t\t %s\n",
-						l.getCodigoDoLivro(), l.getTitulo(), l.getAutor(), l.getValor(), l.getColegaComLivro());
+						l.getCodigoDoLivro(), l.getTitulo(), l.getAutor(), l.getValor(), l.getUsuarioComLivro());
 			}
 		}
 	}
@@ -110,7 +110,7 @@ public class Main {
 			}
 		}
 		if(flagUsuario==false){
-			System.out.println("Colega nao encontrado.");
+			System.out.println("Usuario nao encontrado.");
 		}
 		
 		
@@ -163,8 +163,6 @@ public class Main {
 		rU.addUsuario(u2);
 		rU.addUsuario(u3);
 		rU.addUsuario(u4);
-		
-		
 		
 		int op;
 		do {
