@@ -13,7 +13,7 @@ public class RegistroUsuario {
 		rU = new ArrayList<Usuario>();
 	}
 	
-	public void addColega (Usuario usuario) {
+	public void addUsuario (Usuario usuario) {
 		rU.add(usuario);
 	}
 

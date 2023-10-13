@@ -159,10 +159,10 @@ public class Main {
 		Usuario u2 = new Usuario ("Jose dos Santos", "4198574525");
 		Usuario u3 = new Usuario ("Isabela Amaral", "41986325412");
 		Usuario u4 = new Usuario ("Bruna de Oliveira", "41997456328");
-		rU.addColega(u1);
-		rU.addColega(u2);
-		rU.addColega(u3);
-		rU.addColega(u4);
+		rU.addUsuario(u1);
+		rU.addUsuario(u2);
+		rU.addUsuario(u3);
+		rU.addUsuario(u4);
 		
 		
 		
