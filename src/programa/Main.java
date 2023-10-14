@@ -166,8 +166,8 @@ public class Main {
 		do {
 			System.out.println("\n==> Menu:\n");
 			System.out.println("   0 - sair");
-			System.out.println("   1 - adiciona livro");
-			System.out.println("   2 - adiciona colega");
+			System.out.println("   1 - adicionar livro");
+			System.out.println("   2 - adicionar usuario");
 			System.out.println("   3 - emprestar livro");
 			System.out.println("   4 - devolver livro");
 			System.out.println("   5 - listar livros por ordem alfabetica");
