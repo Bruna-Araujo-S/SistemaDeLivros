@@ -2,10 +2,9 @@ package programa;
 
 import java.util.Scanner;
 
-import registro.RegistroLivro;
-import registro.RegistroUsuario;
-import dados.Usuario;
-import dados.Livro;
+import registro.*;
+import dados.*;
+
 
 public class Main {
 	
@@ -114,8 +113,6 @@ public class Main {
 		if(flagUsuario==false){
 			System.out.println("Usuario nao encontrado.");
 		}
-		
-		
 	}
 	
 	private static void devolverLivro() {
@@ -138,8 +135,7 @@ public class Main {
 	}
 	
 	private static void listarLivrosAZ() {
-		rL.ordenaTituloAZ();
-		
+		rL.ordenaTituloAZ();	
 	}
 	
 	public static void main(String[] args) {
