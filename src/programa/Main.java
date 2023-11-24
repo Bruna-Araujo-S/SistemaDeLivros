@@ -2,15 +2,15 @@ package programa;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
-import bin.BancoDeDados.ConnectionSQL;
 import dados.Administrador;
 import dados.Avaliacao;
 import dados.Livro;
 import dados.Usuario;
 import dados.Enum.GeneroLivro;
-import registro.RegistroAdministrador;
+import jdbc.ConnectionSQL;
 import registro.RegistroLivro;
 import registro.RegistroUsuario;
 
@@ -19,7 +19,6 @@ public class Main {
     private static Scanner sc = new Scanner(System.in);
     private static RegistroLivro rL;
     private static RegistroUsuario rU;
-    private static RegistroAdministrador rA = new RegistroAdministrador();
     private static ConnectionSQL conexao = new ConnectionSQL();
 
 
@@ -51,51 +50,40 @@ public class Main {
     private static void listarTodosUsuarios() {
         System.out.println("=== Lista de Usuários ===");
         System.out.println("Cod\t Nome\t\t\t Telefone");
-        for (int i = 0; i < rU.size(); i++) {
+        for (int i = 0; i < ((List<Livro>) rU).size(); i++) {
             Usuario u = rU.getUsuario(i);
             System.out.printf("%s\t %s\t\t  %s\n",
-                    u.getIdUsuario(), u.getNome(), u.getTelefone());
+                    u.getId(), u.getNome(), u.getTelefone());
         }
     }
 //#endregion Usuario
 
 //#region Administrador
 private static void adicionarAdministrador() {
-    String nome, telefone, sexo, senha;
+    String nome, email, senha;
     int idade;
     Administrador admin;
 
     System.out.println("Adicionar Administrador:\n");
     System.out.print("Nome: ");
     nome = sc.nextLine();
-    System.out.print("Telefone: ");
-    telefone = sc.nextLine();
     System.out.print("Idade: ");
     idade = sc.nextInt();
     sc.nextLine();
-    System.out.print("Sexo: ");
-    sexo = sc.nextLine();
+    System.out.print("Email: ");
+    email = sc.nextLine();
     System.out.print("Senha: ");
     senha = sc.nextLine();
 
-    admin = new Administrador(rU, rL, nome, telefone, idade, sexo);
-    rA.adicionarAdministrador(admin, senha);
+    String sql = "INSERT INTO Administrador (Nome, Idade, Email, Senha) VALUES ('" + nome + "', " + idade + ", '" + email + "', '" + senha + "')";
 
-    String sql = "INSERT INTO Administradores (Nome, Telefone, Idade, Sexo, Senha) VALUES ('" + nome + "', '" + telefone + "', " + idade + ", '" + sexo + "', '" + senha + "')";
-    conexao.ExecutaQuery(sql);
-
-    System.out.println("Administrador adicionado com sucesso!");
-}
-
-    private static void listarTodosAdministradores() {
-        System.out.println("=== Lista de Administradores ===");
-        System.out.println("Cod\t Nome\t\t\t Telefone");
-        for (int i = 0; i < rA.size(); i++) {
-            Administrador admin = rA.getAdministrador(i);
-            System.out.printf("%s\t %s\t\t  %s\n",
-                    admin.getIdUsuario(), admin.getNome(), admin.getTelefone());
-        }
+    try {
+        conexao.ExecutaUpdate(sql);
+        System.out.println("Administrador adicionado com sucesso!");
+    } catch (SQLException e) {
+        System.out.println("Erro ao adicionar o administrador: " + e.getMessage());
     }
+}
 //#endregion Administrador
     
     
@@ -161,9 +149,8 @@ private static void adicionaLivro() {
         System.out.println("=== Lista de livros disponíveis ===");
         System.out.println("Nr Registro\t Titulo\t Autor\t Valor");
         for (Livro livro : rL.getLivros()) {
-            if (livro.getDataEmprestimo() == null) {
-                exibirInformacoesBasicasLivro(livro);
-            }
+            if (livro.getDataEmprestimo() == null);
+            
         }
     }
 
@@ -181,11 +168,6 @@ private static void adicionaLivro() {
         }
     }
 
-    private static void exibirInformacoesBasicasLivro(Livro livro) {
-        System.out.printf("%s\t %s\t  %s\t %s\t\n",
-                livro.getCodigoDoLivro(), livro.getTitulo(), livro.getAutor(), livro.getValor());
-    }
-
 	private static void emprestarLivro() {
         System.out.print("Digite o código do livro a ser emprestado: ");
         int codLivro = sc.nextInt();
@@ -198,8 +180,8 @@ private static void adicionaLivro() {
     
         boolean usuarioEncontrado = false;
     
-        for (Usuario usuario : rU.getUsuarios()) {
-            if (usuario.getIdUsuario() == idUsuario) {
+        for (Usuario usuario : rU.getTodosUsuarios()) {
+            if (usuario.getId() == idUsuario) {
                 usuarioEncontrado = true;
     
                 for (Livro livro : rL.getLivros()) {
@@ -266,7 +248,7 @@ private static void listarAvaliacoesLivro() {
     sc.nextLine();
 
     String sql = "SELECT * FROM Avaliacao WHERE LivroId = " + codLivro;
-    ResultSet result = conexao.ExecutaQuerySelect(sql);
+    ResultSet result = conexao.ExecutaQuery(sql);
 
     if (result != null) {
         try {
@@ -301,11 +283,6 @@ private static void listarAvaliacoesLivro() {
     //     System.out.println("Livro não encontrado.");
     // }
 }
-
-    private static void listarTodosLivrosComAvaliacoes() {
-        rL.ordenarPorAvaliacoes();
-        listarTodosLivros();
-    }
 //#endregion Avaliação
 
 
@@ -324,9 +301,7 @@ private static void listarAvaliacoesLivro() {
             System.out.println("   4 - devolver livro");
             System.out.println("   5 - listar livros por ordem alfabética");
             System.out.println("   6 - listar avaliações de um livro");
-            System.out.println("   7 - listar todos os livros por avaliações");
-            System.out.println("   8 - adicionar administrador");
-            System.out.println("   9 - listar todos os administradores");
+            System.out.println("   7 - adicionar administrador");
             System.out.print("\n   Opcao: ");
             op = sc.nextInt();
             sc.nextLine();
@@ -356,13 +331,7 @@ private static void listarAvaliacoesLivro() {
                     listarAvaliacoesLivro();
                     break;
                 case 7:
-                    listarTodosLivrosComAvaliacoes();
-                    break;
-                case 8:
                     adicionarAdministrador();
-                    break;
-                case 9:
-                    listarTodosAdministradores();
                     break;
                 default:
                     System.out.println("Opcao invalida!\n\n");

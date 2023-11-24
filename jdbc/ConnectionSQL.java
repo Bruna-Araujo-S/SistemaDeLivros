@@ -1,4 +1,4 @@
-package bin.BancoDeDados;
+package jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +11,7 @@ public class ConnectionSQL {
     String url = "jdbc:mysql://localhost:3306/Sistema_de_Livros";
     String usuario = "root";
     String senha = "user";
-
+    
     private Connection dbconn = null;
     private Statement sqlmgr = null;
 
@@ -43,21 +43,20 @@ public class ConnectionSQL {
         }
     }
     
-    public int ExecutaQuery(String sql) {
+    public ResultSet ExecutaQuery(String sql) {
         try {
-            return sqlmgr.executeUpdate(sql);
-        } catch (Exception Error) {
-            System.out.println("Error on Connect: " + Error.getMessage());
+            Statement stmt = dbconn.createStatement();
+            return stmt.executeQuery(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
-        return -1;
     }
-
-    public ResultSet ExecutaQuerySelect(String sql) {
-        try {
-            return sqlmgr.executeQuery(sql);
-        } catch (Exception Error) {
-            System.out.println("Error on Connect: " + Error.getMessage());
+    
+    public void ExecutaUpdate(String sql) throws SQLException {
+        try (Statement stmt = dbconn.createStatement()) {
+            stmt.executeUpdate(sql);
         }
-        return null;
     }
+    
 }

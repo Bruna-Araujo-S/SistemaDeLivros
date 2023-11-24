@@ -9,7 +9,7 @@ import dados.Enum.GeneroLivro;
 public class Livro implements Comparable<Livro> {
 
     private String titulo, autor;
-    private GeneroLivro genero;  
+    private GeneroLivro genero;
     private LocalDateTime dataEmprestimo;
     private double valor;
     private static int codLv = 1;
@@ -84,40 +84,13 @@ public class Livro implements Comparable<Livro> {
     public void adicionarAvaliacao(Avaliacao avaliacao) {
         this.avaliacoes.add(avaliacao);
     }
-
-    public double calcularMediaAvaliacoes() {
-        if (avaliacoes.isEmpty()) {
-            return 0.0;
-        }
-
-        double somaNotas = 0.0;
-        for (Avaliacao avaliacao : avaliacoes) {
-            somaNotas += avaliacao.getNota();
-        }
-
-        return somaNotas / avaliacoes.size();
-    }
-
-    public int compareTo(Livro l) {
-        double mediaThis = this.calcularMediaAvaliacoes();
-        double mediaL = l.calcularMediaAvaliacoes();
-
-        if (mediaThis != mediaL) {
-            return Double.compare(mediaL, mediaThis); 
-        } else {
-            if (avaliacoes.size() != l.avaliacoes.size()) {
-                return Integer.compare(l.avaliacoes.size(), avaliacoes.size()); 
-            } else {
-                return this.titulo.compareToIgnoreCase(l.getTitulo());
-            }
-        }
-    }
-
-	public List<Avaliacao> getAvaliacoes() {
-        return new ArrayList<>(avaliacoes);
-    }
-
+    
 	   public void removerAvaliacao(Avaliacao avaliacao) {
         avaliacoes.remove(avaliacao);
+    }
+
+    @Override
+    public int compareTo(Livro o) {
+        throw new UnsupportedOperationException("Unimplemented method 'compareTo'");
     }
 }

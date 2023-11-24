@@ -5,19 +5,42 @@ import java.util.Set;
 
 public class Usuario {
 
+    private int id;
     private String nome, telefone, sexo;
     private int idade;
-    private static int proximoIdUsuario = 1;
-    private final int idUsuario;
     private Set<String> tiposLivrosPreferidos;
+    private String senha;
+    private String email;
 
     public Usuario(String nome, String telefone, int idade, String sexo) {
         this.nome = nome;
         this.telefone = telefone;
         this.idade = idade;
         this.sexo = sexo;
-        this.idUsuario = proximoIdUsuario++;
+        this.id = id++;
         this.tiposLivrosPreferidos = new HashSet<>();
+        this.senha = "";
+        this.email = "";
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha){
+        this.senha = senha;
+      }
+
+          public boolean verificarSenha(String senha) {
+        return this.senha.equals(senha);
+    }
+
+      public String getEmail() {
+        return email;
+    }
+
+      public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getNome() {
@@ -51,11 +74,10 @@ public class Usuario {
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
-
-    public int getIdUsuario() {
-        return idUsuario;
+    public int getId() {
+        return id;
     }
-  
+    
     public void adicionarTipoLivroPreferido(String tipoLivro) {
         this.tiposLivrosPreferidos.add(tipoLivro);
     }
@@ -75,8 +97,11 @@ public class Usuario {
                 ", telefone='" + telefone + '\'' +
                 ", sexo='" + sexo + '\'' +
                 ", idade=" + idade +
-                ", idUsuario=" + idUsuario +
+                ", Id=" + id +
                 ", tiposLivrosPreferidos=" + tiposLivrosPreferidos +
                 '}';
     }
+
+
+
 }

@@ -51,6 +51,7 @@ public enum GeneroLivro {
         TEATRO,
         FOTOGRAFIA,
         MODA,
+        TECNICO,
         GASTRONOMIA,
         ENGENHARIA,
         PSICOLOGIA,

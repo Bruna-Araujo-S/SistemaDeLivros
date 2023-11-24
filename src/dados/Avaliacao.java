@@ -1,7 +1,5 @@
 package dados;
 
-import bin.BancoDeDados.ConnectionSQL;
-
 public class Avaliacao {
 
     private int nota;
@@ -43,22 +41,4 @@ public class Avaliacao {
         return String.format("Avaliação: Livro='%s', Usuário='%s', Nota='%d'", livro.getTitulo(), usuario.getNome(), nota);
     }
 
-    public void salvarNoBancoDeDados(ConnectionSQL conexao) {
-        String sql = String.format("INSERT INTO Avaliacoes (Nota, UsuarioID, LivroID) VALUES (%d, %d, %d)",
-                nota, usuario.getIdUsuario(), livro.getCodigoDoLivro());
-        conexao.ExecutaQuery(sql);
-    }
-
-    public void atualizarNoBancoDeDados(ConnectionSQL conexao, int novaNota) {
-        setNota(novaNota);
-        String sql = String.format("UPDATE Avaliacoes SET Nota = %d WHERE UsuarioID = %d AND LivroID = %d",
-                novaNota, usuario.getIdUsuario(), livro.getCodigoDoLivro());
-        conexao.ExecutaQuery(sql);
-    }
-
-    public void excluirDoBancoDeDados(ConnectionSQL conexao) {
-        String sql = String.format("DELETE FROM Avaliacoes WHERE UsuarioID = %d AND LivroID = %d",
-                usuario.getIdUsuario(), livro.getCodigoDoLivro());
-        conexao.ExecutaQuery(sql);
-    }
 }
