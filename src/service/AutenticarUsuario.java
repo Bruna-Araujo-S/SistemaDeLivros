@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import dados.Usuario;
+import util.SessaoUsuario;
+
 public class AutenticarUsuario {
     private Connection conexao;
 
@@ -51,23 +54,49 @@ public class AutenticarUsuario {
         }
         return false;
     }
-    
 
-    
-    
+    public boolean autenticarUsuario(String email) {
+    String query = "SELECT * FROM usuarios WHERE email = ? ";
+    try (PreparedStatement statement = conexao.prepareStatement(query)) {
+        statement.setString(1, email);
 
-    public boolean autenticarUsuario(String email, String senha) {
-        String query = "SELECT * FROM usuarios WHERE email = ? AND senha = ?";
-        try (PreparedStatement statement = conexao.prepareStatement(query)) {
-            statement.setString(1, email);
-            statement.setString(2, senha);
-            
-            try (ResultSet resultSet = statement.executeQuery()) {
-                return resultSet.next(); 
+        try (ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                Usuario usuarioAutenticado = obterUsuarioPorEmail(email);
+                SessaoUsuario.setUsuarioLogado(usuarioAutenticado);
+                return true;
             }
-        } catch (SQLException e) {
-            e.printStackTrace(); 
-            return false;
         }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    
+    return false;
+}
+
+private Usuario obterUsuarioPorEmail(String email) {
+    String query = "SELECT * FROM usuarios WHERE email = ?";
+    
+    try (PreparedStatement statement = conexao.prepareStatement(query)) {
+        statement.setString(1, email);
+
+        try (ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String nome = resultSet.getString("nome");
+                String senha = resultSet.getString("senha");
+                String telefone = resultSet.getString("telefone");
+                int idade = resultSet.getInt("idade");
+                String sexo = resultSet.getString("sexo");
+
+                return new Usuario(nome, email, senha, telefone, idade, sexo, id);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return null;
+}
+
 }

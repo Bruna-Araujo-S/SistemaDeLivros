@@ -12,32 +12,27 @@ public class Administrador extends Usuario {
     private RegistroUsuario registroUsuario;
 
     public Administrador(String nome, String telefone, int idade, String sexo, String email, String senha, NivelAcesso nivelAcesso) {
-        super(nome, telefone, idade, sexo);
-        this.email = "";
-        this.senha = "";
+        super(nome, telefone, email, senha, idade, sexo);
+        this.email = email;
+        this.senha = senha;
         this.nivelAcesso = nivelAcesso;
         this.registroUsuario = new RegistroUsuario();
     }
-
-
+    
     public int getId() {
         return id;
     }
 
-    public String getEmail() {
-        return this.email.toLowerCase();
-    }
+    public void setId(int id) {
+        this.id = id;
+    }    
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getEmail() {
+        return this.email;
     }
 
     public String getSenha() {
         return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 
     public NivelAcesso getNivelAcesso() {
@@ -57,17 +52,20 @@ public class Administrador extends Usuario {
         return this.senha.equals(senha);
     }
     
-    public void adicionarUsuario(String nome, String telefone, int idade, String sexo) {
-        Usuario novoUsuario = new Usuario(nome, telefone, idade, sexo);
+    public void adicionarUsuario(String nome, String telefone, String emai, String senha, int idade, String sexo) {
+        Usuario novoUsuario = new Usuario(nome, telefone, email, senha,  idade, sexo);
         registroUsuario.adicionarUsuario(novoUsuario);
         System.out.println("Novo usuário adicionado com sucesso!");
     }
 
-    public void editarUsuario(int codigoUsuario, String novoNome, int novaIdade) {
-        Usuario usuario = registroUsuario.getUsuario(codigoUsuario);
+    public void editarUsuario(int Id, String novoNome, int novaIdade, String novoTelefone, String novaSenha, String novoSexo) {
+        Usuario usuario = registroUsuario.getUsuarioById(Id);
         if (usuario != null) {
             usuario.setNome(novoNome);
             usuario.setIdade(novaIdade);
+            usuario.setSenha(novaSenha);
+            usuario.setSexo(novoSexo);
+            usuario.setTelefone(novoTelefone);
             System.out.println("\nUsuário editado com sucesso!");
             System.out.println("Informações Atualizadas do Usuário:");
             System.out.printf("Código: %s\nNome: %s\nTelefone: %s\nIdade: %s\nSexo: %s\n",
@@ -78,7 +76,7 @@ public class Administrador extends Usuario {
     }
 
     public void excluirUsuario(int Id, RegistroUsuario registroUsuario) {
-        Usuario usuario = registroUsuario.getUsuario(Id);
+        Usuario usuario = registroUsuario.getUsuarioById(Id);
     
         if (usuario != null) {
             registroUsuario.removerUsuarioPorId(usuario.getId());
@@ -91,7 +89,7 @@ public class Administrador extends Usuario {
     
         public RegistroUsuario getRegistroUsuario() {
             return this.registroUsuario;
-        }
+        } 
         
     }
     

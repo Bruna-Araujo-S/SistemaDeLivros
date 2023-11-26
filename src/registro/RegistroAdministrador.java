@@ -1,10 +1,15 @@
 package registro;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import dados.Administrador;
-import util.ValidacaoCadastro;
+import dados.Enum.NivelAcesso;
 
 public class RegistroAdministrador {
 
@@ -14,86 +19,48 @@ public class RegistroAdministrador {
         administradores = new ArrayList<>();
     }
 
-     public void adicionarAdministrador(Administrador administrador, String senha) {
-        if (!ValidacaoCadastro.validarEmail(administrador.getEmail())) {
-            System.out.println(ValidacaoCadastro.obterMensagemEmailInvalido());
-            return;
-        }
-        if (!ValidacaoCadastro.validarNomeUsuario(administrador.getNome())) {
-            System.out.println(ValidacaoCadastro.obterMensagemNomeUsuarioInvalido());
-            return;
-        }
-        if (!ValidacaoCadastro.validarIdade(administrador.getIdade())) {
-            System.out.println(ValidacaoCadastro.obterMensagemIdadeInvalida());
-            return;
-        }
-        if (!ValidacaoCadastro.validarSexo(administrador.getSexo())) {
-            System.out.println(ValidacaoCadastro.obterMensagemSexoInvalido());
-            return;
-        }
-        if (!ValidacaoCadastro.validarSenha(administrador.getSenha())) {
-            System.out.println(ValidacaoCadastro.obterMensagemSenhaInvalida());
-            return;
-        }
+    public boolean adicionarAdministrador(Administrador administrador, String senha) {
         administrador.definirSenha(senha);
-        administradores.add(administrador);
-        System.out.println("Administrador adicionado com sucesso!");
-    }
-
-
-    public void editarAdministrador(int indice, Administrador novoAdministrador, String novaSenha) {
-        if (indice >= 0 && indice < administradores.size()) {
-            if (!ValidacaoCadastro.validarEmail(novoAdministrador.getEmail())) {
-                System.out.println(ValidacaoCadastro.obterMensagemEmailInvalido());
-                return;
-            }
-            if (!ValidacaoCadastro.validarNomeUsuario(novoAdministrador.getNome())) {
-                System.out.println(ValidacaoCadastro.obterMensagemNomeUsuarioInvalido());
-                return;
-            }
-            if (!ValidacaoCadastro.validarIdade(novoAdministrador.getIdade())) {
-                System.out.println(ValidacaoCadastro.obterMensagemIdadeInvalida());
-                return;
-            }
-            if (!ValidacaoCadastro.validarSexo(novoAdministrador.getSexo())) {
-                System.out.println(ValidacaoCadastro.obterMensagemSexoInvalido());
-                return;
-            }
-                if (novaSenha != null && !ValidacaoCadastro.validarSenha(novaSenha)) {
-                System.out.println(ValidacaoCadastro.obterMensagemSenhaInvalida());
-                return;
-            }
-                administradores.set(indice, novoAdministrador);
-            if (novaSenha != null) {
-                novoAdministrador.definirSenha(novaSenha);
-            }
-            System.out.println("Administrador editado com sucesso!");
+        administrador.setNivelAcesso(NivelAcesso.ADMIN);
+        
+        if (administradores.add(administrador)) {
+            System.out.println("Administrador adicionado com sucesso!");
+            return true;
         } else {
-            System.out.println("Índice inválido. Não foi possível editar o administrador.");
+            System.out.println("Falha ao adicionar administrador. Verifique os dados fornecidos.");
+            return false;
         }
     }
     
     public Administrador getAdministradorByEmail(String email) {
-        for (Administrador admin : administradores) {
-            System.out.println("Lista de Administradores: " + administradores);
-            if (admin.getEmail().equals(email)) {
-                return admin;
-            }
+    String url = "jdbc:mysql://localhost:3306/Sistema_de_Livros";
+    String usuario = "root";
+    String senhaDB = "user";
 
+    String query = "SELECT * FROM administrador WHERE email = ?";
+
+    try (Connection connection = DriverManager.getConnection(url, usuario, senhaDB);
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setString(1, email);
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String nome = resultSet.getString("nome");
+                int idade = resultSet.getInt("idade");
+                String senha = resultSet.getString("senha");
+                NivelAcesso nivelAcesso = NivelAcesso.valueOf(resultSet.getString("nivel_acesso"));
+
+                Administrador administrador = new Administrador(nome, "", idade, "", email, senha, nivelAcesso);
+                administrador.setId(id);
+
+                return administrador;
+            }
         }
-        return null;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
 
-    public boolean removerAdministradorPorId(int id) {
-        for (Administrador admin : administradores) {
-            if (admin.getId() == id) {
-                administradores.remove(admin);
-                System.out.println("Administrador removido com sucesso!");
-                return true;
-            }
-        }
-        System.out.println("Administrador com ID " + id + " não encontrado. Não foi possível remover.");
-        return false;
-    }
-    
+    return null;
+}
+
 }

@@ -18,7 +18,6 @@ import javax.swing.JTextField;
 import dados.Administrador;
 import dados.Usuario;
 import registro.RegistroAdministrador;
-import registro.RegistroAvaliacao;
 import registro.RegistroLivro;
 import registro.RegistroUsuario;
 import service.AutenticarUsuario;
@@ -27,14 +26,14 @@ public class LoginFrame extends JFrame {
 
     private RegistroAdministrador registroAdministrador;
     private RegistroUsuario registroUsuario;
-    private RegistroAvaliacao registroAvaliacao;
     private RegistroLivro registroLivro;
     private AutenticarUsuario autenticarUsuario;
 
 
-    public LoginFrame(RegistroAdministrador registroAdministrador, RegistroUsuario registroUsuario) {
+    public LoginFrame(RegistroAdministrador registroAdministrador, RegistroUsuario registroUsuario, RegistroLivro registroLivro) {
         this.registroAdministrador = registroAdministrador;
         this.registroUsuario = registroUsuario;
+        this.registroLivro = registroLivro;
         this.autenticarUsuario = new AutenticarUsuario();
         this.autenticarUsuario.estabelecerConexao("jdbc:mysql://localhost:3306/Sistema_de_Livros", "root", "user");
         
@@ -83,10 +82,10 @@ public class LoginFrame extends JFrame {
                         }
                     }
                 } else if ("Comum".equals(userType)) {
-                    if (autenticarUsuario.autenticarUsuario(email, senha)) {
+                    if (autenticarUsuario.autenticarUsuario(email)) {
                         Usuario usuario = registroUsuario.getUsuarioByEmail(email);
                         if (usuario != null && usuario.verificarSenha(senha)) {
-                            new UserFrame(usuario, registroLivro, registroAvaliacao);
+                            new UserFrame(usuario, registroLivro);
                             dispose();
                         } else {
                             JOptionPane.showMessageDialog(LoginFrame.this, "Credenciais inválidas para Usuário. Tente novamente.");
@@ -124,6 +123,8 @@ public class LoginFrame extends JFrame {
     public static void main(String[] args) {
         RegistroAdministrador registroAdmin = new RegistroAdministrador();
         RegistroUsuario registroUsuario = new RegistroUsuario();
-        new LoginFrame(registroAdmin, registroUsuario);
+        RegistroLivro registroLivro = new RegistroLivro();
+
+        new LoginFrame(registroAdmin, registroUsuario, registroLivro);
     }
 }

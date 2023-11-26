@@ -3,25 +3,47 @@ package dados;
 import java.util.HashSet;
 import java.util.Set;
 
+
 public class Usuario {
 
-    private int id;
     private String nome, telefone, sexo;
     private int idade;
     private Set<String> tiposLivrosPreferidos;
     private String senha;
     private String email;
+    private static int proximoId = 1;
+    private int id;
 
-    public Usuario(String nome, String telefone, int idade, String sexo) {
+    public Usuario(String nome, String email, String senha, String telefone, int idade, String sexo) {
         this.nome = nome;
         this.telefone = telefone;
         this.idade = idade;
         this.sexo = sexo;
-        this.id = id++;
         this.tiposLivrosPreferidos = new HashSet<>();
-        this.senha = "";
-        this.email = "";
+        this.senha = senha;
+        this.email = email;
+        this.id = proximoId++;
     }
+
+    public Usuario(String nome, String email, String senha, String telefone, int idade, String sexo, int id) {
+        this.nome = nome;
+        this.telefone = telefone;
+        this.idade = idade;
+        this.sexo = sexo;
+        this.tiposLivrosPreferidos = new HashSet<>();
+        this.senha = senha;
+        this.email = email;
+        this.id = id;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }    
 
     public String getSenha() {
         return senha;
@@ -74,9 +96,7 @@ public class Usuario {
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
-    public int getId() {
-        return id;
-    }
+ 
     
     public void adicionarTipoLivroPreferido(String tipoLivro) {
         this.tiposLivrosPreferidos.add(tipoLivro);
@@ -97,11 +117,8 @@ public class Usuario {
                 ", telefone='" + telefone + '\'' +
                 ", sexo='" + sexo + '\'' +
                 ", idade=" + idade +
-                ", Id=" + id +
                 ", tiposLivrosPreferidos=" + tiposLivrosPreferidos +
                 '}';
     }
-
-
 
 }

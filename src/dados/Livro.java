@@ -1,32 +1,39 @@
 package dados;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import dados.Enum.GeneroLivro;
 
 public class Livro implements Comparable<Livro> {
 
     private String titulo, autor;
     private GeneroLivro genero;
-    private LocalDateTime dataEmprestimo;
     private double valor;
-    private static int codLv = 1;
-    private int codigoDoLivro;
-    private Usuario usuarioComLivro;
-    private List<Avaliacao> avaliacoes;
+    private int usuarioAvaliadorID;
+    private int nota;
+    private int id;
+    private int numeroAvaliacoes;
 
-    public Livro(String titulo, String autor, GeneroLivro genero, double valor) {
+
+   
+    public Livro(String titulo, String autor, GeneroLivro genero, double valor, int nota, int idUsuario) {
         this.titulo = titulo;
         this.autor = autor;
         this.genero = genero;
         this.valor = valor;
-        dataEmprestimo = null;
-        usuarioComLivro = null;
-        this.codigoDoLivro = codLv;
-        codLv++;
-        this.avaliacoes = new ArrayList<>();
+        this.nota = nota;
+        this.usuarioAvaliadorID = idUsuario;
+    }
+    
+    
+    public int getNumeroAvaliacoes() {
+        return this.numeroAvaliacoes;
+    }
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitulo() {
@@ -61,36 +68,35 @@ public class Livro implements Comparable<Livro> {
         this.valor = valor;
     }
 
-    public int getCodigoDoLivro() {
-        return codigoDoLivro;
+    public int getNota() {
+        return nota;
     }
 
-    public LocalDateTime getDataEmprestimo() {
-        return dataEmprestimo;
+    public void atribuirNota(int novaNota) {
+        if (isValidNota(novaNota)) {
+            this.nota = novaNota;
+        } else {
+            throw new IllegalArgumentException("A nota deve estar no intervalo de 0 a 10.");
+        }
     }
 
-    public void setDataEmprestimo(LocalDateTime dataEmprestimo) {
-        this.dataEmprestimo = dataEmprestimo;
+    private boolean isValidNota(int novaNota) {
+        return novaNota >= 0 && novaNota <= 10;
     }
 
-    public Usuario getUsuarioComLivro() {
-        return usuarioComLivro;
+       public void setUsuarioAvaliadorID(int usuarioAvaliadorID) {
+        this.usuarioAvaliadorID = usuarioAvaliadorID;
     }
 
-    public void setUsuarioComLivro(Usuario usuarioComLivro) {
-        this.usuarioComLivro = usuarioComLivro;
+    public int getUsuarioAvaliadorID() {
+        return this.usuarioAvaliadorID;
     }
 
-    public void adicionarAvaliacao(Avaliacao avaliacao) {
-        this.avaliacoes.add(avaliacao);
-    }
-    
-	   public void removerAvaliacao(Avaliacao avaliacao) {
-        avaliacoes.remove(avaliacao);
-    }
 
     @Override
     public int compareTo(Livro o) {
         throw new UnsupportedOperationException("Unimplemented method 'compareTo'");
     }
+
 }
+    
