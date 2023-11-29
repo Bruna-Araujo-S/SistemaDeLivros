@@ -2,10 +2,6 @@ package Test;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,15 +12,19 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import dados.Administrador;
-import dados.Enum.NivelAcesso;
+import dao.services.AdminDAO;
+import enums.NivelAcesso;
+import interfaces.gerenciamento.IAdminDAO;
+import models.Administrador;
 
 public class CadastroAdmin extends JFrame {
 
     private JTextField nomeField, emailField, idadeField;
     private JPasswordField senhaField;
+    private IAdminDAO adminDAO;
 
     public CadastroAdmin() {
+        this.adminDAO = new AdminDAO();
         setTitle("Cadastro de Administrador");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,47 +90,16 @@ public class CadastroAdmin extends JFrame {
         char[] senhaChars = senhaField.getPassword();
         String senha = new String(senhaChars);
 
+        Administrador administrador = new Administrador(nome, "", idade, "", email, senha, NivelAcesso.ADMIN);
 
-        Administrador administrador = new Administrador(nome, "", idade, "", email, "", NivelAcesso.ADMIN);
-
-        if (salvarNoBancoDeDados(administrador, senha)) {
+        if (adminDAO.salvarNoBancoDeDados(administrador, senha)) {
             JOptionPane.showMessageDialog(this, "Administrador cadastrado com sucesso!");
         } else {
             JOptionPane.showMessageDialog(this, "Erro ao cadastrar administrador.");
         }
     }
 
-    private boolean salvarNoBancoDeDados(Administrador administrador, String senha) {
-        String url = "jdbc:mysql://localhost:3306/Sistema_de_Livros";
-        String usuario = "root";
-        String senhaDB = "user";
 
-        try (Connection connection = DriverManager.getConnection(url, usuario, senhaDB)) {
-            String query = "INSERT INTO administrador (nome, email, idade, senha) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, administrador.getNome());
-                preparedStatement.setString(2, administrador.getEmail());
-                preparedStatement.setInt(3, administrador.getIdade());
-                preparedStatement.setString(4, senha);
-                
-                int rowsAffected = preparedStatement.executeUpdate();
-                
-
-if (rowsAffected > 0) {
-    System.out.println("Administrador inserido com sucesso!");
-    return true;
-} else {
-    System.out.println("Nenhuma linha afetada. Falha ao inserir o administrador.");
-    return false;
-}
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-        
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

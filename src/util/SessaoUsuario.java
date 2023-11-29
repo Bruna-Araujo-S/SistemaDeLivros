@@ -1,6 +1,6 @@
 package util;
 
-import dados.Usuario;
+import models.Usuario;
 
 public class SessaoUsuario {
     private static Usuario usuarioLogado;
@@ -13,10 +13,11 @@ public class SessaoUsuario {
         return usuarioLogado;
     }
 
+    
     public static int getIdUsuario() {
         if (usuarioLogado != null) {
             return usuarioLogado.getId();
         }
-        return -1; 
+        return -1;
     }
 }

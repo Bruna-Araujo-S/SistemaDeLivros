@@ -1,8 +1,7 @@
-package dados;
+package models;
 
 import java.util.HashSet;
 import java.util.Set;
-
 
 public class Usuario {
 
@@ -36,32 +35,31 @@ public class Usuario {
         this.id = id;
     }
 
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }    
+    }
 
     public String getSenha() {
         return senha;
     }
 
-    public void setSenha(String senha){
+    public void setSenha(String senha) {
         this.senha = senha;
-      }
+    }
 
-          public boolean verificarSenha(String senha) {
+    public boolean verificarSenha(String senha) {
         return this.senha.equals(senha);
     }
 
-      public String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-      public void setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -96,8 +94,7 @@ public class Usuario {
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
- 
-    
+
     public void adicionarTipoLivroPreferido(String tipoLivro) {
         this.tiposLivrosPreferidos.add(tipoLivro);
     }

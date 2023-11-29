@@ -1,4 +1,4 @@
-package dados.Enum;
+package enums;
 
 public enum GeneroLivro {
     

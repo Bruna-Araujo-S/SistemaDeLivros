@@ -1,6 +1,6 @@
-package dados;
+package models;
 
-import dados.Enum.GeneroLivro;
+import enums.GeneroLivro;
 
 public class Livro implements Comparable<Livro> {
 
@@ -11,9 +11,8 @@ public class Livro implements Comparable<Livro> {
     private int nota;
     private int id;
     private int numeroAvaliacoes;
+    private double mediaAvaliacoes;
 
-
-   
     public Livro(String titulo, String autor, GeneroLivro genero, double valor, int nota, int idUsuario) {
         this.titulo = titulo;
         this.autor = autor;
@@ -22,12 +21,23 @@ public class Livro implements Comparable<Livro> {
         this.nota = nota;
         this.usuarioAvaliadorID = idUsuario;
     }
-    
-    
+
     public int getNumeroAvaliacoes() {
         return this.numeroAvaliacoes;
     }
-    
+
+    public void setNumeroAvaliacoes(int numeroAvaliacoes) {
+        this.numeroAvaliacoes = numeroAvaliacoes;
+    }
+
+    public double getMediaAvaliacoes() {
+        return this.mediaAvaliacoes;
+    }
+
+    public void setMediaAvaliacoes(double mediaAvaliacoes) {
+        this.mediaAvaliacoes = mediaAvaliacoes;
+    }
+
     public int getId() {
         return id;
     }
@@ -75,16 +85,21 @@ public class Livro implements Comparable<Livro> {
     public void atribuirNota(int novaNota) {
         if (isValidNota(novaNota)) {
             this.nota = novaNota;
+            this.numeroAvaliacoes++;
         } else {
             throw new IllegalArgumentException("A nota deve estar no intervalo de 0 a 10.");
         }
+    }
+
+    public boolean jaFoiAvaliado(int usuarioId) {
+        return this.usuarioAvaliadorID == usuarioId && this.nota > 0;
     }
 
     private boolean isValidNota(int novaNota) {
         return novaNota >= 0 && novaNota <= 10;
     }
 
-       public void setUsuarioAvaliadorID(int usuarioAvaliadorID) {
+    public void setUsuarioAvaliadorID(int usuarioAvaliadorID) {
         this.usuarioAvaliadorID = usuarioAvaliadorID;
     }
 
@@ -92,11 +107,9 @@ public class Livro implements Comparable<Livro> {
         return this.usuarioAvaliadorID;
     }
 
-
     @Override
     public int compareTo(Livro o) {
         throw new UnsupportedOperationException("Unimplemented method 'compareTo'");
     }
 
 }
-    
