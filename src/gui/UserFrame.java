@@ -49,10 +49,12 @@ public class UserFrame extends JFrame {
 
         JButton cadastrarLivroButton = new JButton("Cadastrar Livro");
         JButton visualizarLivrosOrdenadosButton = new JButton("Visualizar Livros");
+        JButton avaliarLivrosButton = new JButton("Avaliar Livros");
 
         Dimension buttonSize = new Dimension(200, 50);
         cadastrarLivroButton.setPreferredSize(buttonSize);
         visualizarLivrosOrdenadosButton.setPreferredSize(buttonSize);
+        avaliarLivrosButton.setPreferredSize(buttonSize);
 
         cadastrarLivroButton.addActionListener(new ActionListener() {
             @Override
@@ -68,7 +70,6 @@ public class UserFrame extends JFrame {
             }
         });
 
-        JButton avaliarLivrosButton = new JButton("Avaliar Livros");
         avaliarLivrosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
