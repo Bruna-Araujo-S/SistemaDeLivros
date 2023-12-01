@@ -8,10 +8,10 @@ import java.sql.Statement;
 
 public class ConnectionSQL {
 
-    String url = "jdbc:mysql://localhost:3306/Sistema_de_Livros";
+    String url = "jdbc:mysql://localhost:3306/Sistema_de_Livro";
     String usuario = "root";
-    String senha = "user";
-    
+    String senha = "root";
+
     private Connection dbconn = null;
     private Statement sqlmgr = null;
 
@@ -33,7 +33,7 @@ public class ConnectionSQL {
         } catch (SQLException e) {
             System.out.println("Error while closing statement: " + e.getMessage());
         }
-    
+
         try {
             if (dbconn != null) {
                 dbconn.close();
@@ -42,7 +42,7 @@ public class ConnectionSQL {
             System.out.println("Error while closing connection: " + e.getMessage());
         }
     }
-    
+
     public ResultSet ExecutaQuery(String sql) {
         try {
             Statement stmt = dbconn.createStatement();
@@ -52,11 +52,11 @@ public class ConnectionSQL {
             return null;
         }
     }
-    
+
     public void ExecutaUpdate(String sql) throws SQLException {
         try (Statement stmt = dbconn.createStatement()) {
             stmt.executeUpdate(sql);
         }
     }
-    
+
 }

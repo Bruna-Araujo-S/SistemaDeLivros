@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,6 +22,7 @@ public class CadastroAdmin extends JFrame {
 
     private JTextField nomeField, emailField, idadeField;
     private JPasswordField senhaField;
+    private JComboBox<NivelAcesso> nivelAcessoComboBox;
     private IAdminDAO adminDAO;
 
     public CadastroAdmin() {
@@ -71,8 +73,16 @@ public class CadastroAdmin extends JFrame {
         senhaField.setBounds(100, 110, 165, 25);
         panel.add(senhaField);
 
+        JLabel nivelAcessoLabel = new JLabel("Nivel Acesso:");
+        nivelAcessoLabel.setBounds(10, 140, 100, 25);
+        panel.add(nivelAcessoLabel);
+
+        nivelAcessoComboBox = new JComboBox<>(new NivelAcesso[] { NivelAcesso.ADMIN });
+        nivelAcessoComboBox.setBounds(100, 140, 165, 25);
+        panel.add(nivelAcessoComboBox);
+
         JButton cadastrarButton = new JButton("Cadastrar");
-        cadastrarButton.setBounds(10, 160, 120, 25);
+        cadastrarButton.setBounds(10, 170, 120, 25);
         panel.add(cadastrarButton);
 
         cadastrarButton.addActionListener(new ActionListener() {
@@ -89,8 +99,9 @@ public class CadastroAdmin extends JFrame {
         int idade = Integer.parseInt(idadeField.getText());
         char[] senhaChars = senhaField.getPassword();
         String senha = new String(senhaChars);
+        NivelAcesso nivelAcesso = (NivelAcesso) nivelAcessoComboBox.getSelectedItem();
 
-        Administrador administrador = new Administrador(nome, "", idade, "", email, senha, NivelAcesso.ADMIN);
+        Administrador administrador = new Administrador(nome, "", idade, "", email, senha, nivelAcesso.name());
 
         if (adminDAO.salvarNoBancoDeDados(administrador, senha)) {
             JOptionPane.showMessageDialog(this, "Administrador cadastrado com sucesso!");
@@ -98,7 +109,6 @@ public class CadastroAdmin extends JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao cadastrar administrador.");
         }
     }
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

@@ -12,20 +12,19 @@ public class Administrador extends Usuario {
     private int id;
     private String email;
     private String senha;
-    private NivelAcesso nivelAcesso;
+    private String nivelAcesso;
     private UsuarioService usuarioService;
     private IUsuarioDAO usuarioDAO;
 
     public Administrador(String nome, String telefone, int idade, String sexo, String email, String senha,
-        NivelAcesso nivelAcesso) {
-    super(nome, telefone, email, senha, idade, sexo);
-    this.email = email;
-    this.senha = senha;
-    this.nivelAcesso = nivelAcesso;
-    this.usuarioDAO = new UsuarioDAO();
-    this.usuarioService = new UsuarioService(usuarioDAO);
-}
-
+            String nivelAcesso) {
+        super(nome, telefone, email, senha, idade, sexo);
+        this.email = email;
+        this.senha = senha;
+        this.nivelAcesso = nivelAcesso;
+        this.usuarioDAO = new UsuarioDAO();
+        this.usuarioService = new UsuarioService(usuarioDAO);
+    }
 
     public int getId() {
         return id;
@@ -43,11 +42,11 @@ public class Administrador extends Usuario {
         return senha;
     }
 
-    public NivelAcesso getNivelAcesso() {
+    public String getNivelAcesso() {
         return nivelAcesso;
     }
 
-    public void setNivelAcesso(NivelAcesso ADMIN) {
+    public void setNivelAcesso(String ADMIN) {
         this.nivelAcesso = ADMIN;
     }
 

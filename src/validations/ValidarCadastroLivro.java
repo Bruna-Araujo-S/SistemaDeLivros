@@ -30,8 +30,8 @@ public class ValidarCadastroLivro {
         return true;
     }
 
-    public boolean validarNota(int nota) {
-        if (nota < 0 || nota > 10) {
+    public boolean validarNota(double d) {
+        if (d < 0 || d > 10) {
             exibirMensagemErro("Livro inválido: nota deve estar entre 0 e 10.");
             return false;
         }
@@ -45,14 +45,14 @@ public class ValidarCadastroLivro {
         }
 
         return validarTitulo(livro.getTitulo()) &&
-               validarAutor(livro.getAutor()) &&
-               validarValor(livro.getValor()) &&
-               validarNota(livro.getNota());
+                validarAutor(livro.getAutor()) &&
+                validarValor(livro.getValor()) &&
+                validarNota(livro.getNota());
     }
 
     private void exibirMensagemErro(String mensagem) {
         System.out.println(mensagem);
-    JOptionPane.showMessageDialog(null, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
 
     }
 }

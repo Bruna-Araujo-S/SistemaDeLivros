@@ -41,7 +41,7 @@ public class AutenticarUsuario {
         String query = "SELECT * FROM administrador WHERE email = ?";
         try (PreparedStatement statement = conexao.prepareStatement(query)) {
             statement.setString(1, email.toLowerCase().trim());
-    
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     String hashedSenha = resultSet.getString("senha");
@@ -56,13 +56,10 @@ public class AutenticarUsuario {
             System.err.println("Código do erro: " + e.getErrorCode());
             e.printStackTrace();
         }
-    
+
         return false;
     }
-    
 
-    
-    
     public boolean autenticarUsuario(String email, String senha) {
         String query = "SELECT * FROM usuarios WHERE email = ?";
         try (PreparedStatement statement = conexao.prepareStatement(query)) {
@@ -111,31 +108,29 @@ public class AutenticarUsuario {
     }
 
     private Administrador obterAdminPorEmail(String email) {
-    String query = "SELECT * FROM administrador WHERE email = ?";
+        String query = "SELECT * FROM administrador WHERE email = ?";
 
-    try (PreparedStatement statement = conexao.prepareStatement(query)) {
-        statement.setString(1, email);
+        try (PreparedStatement statement = conexao.prepareStatement(query)) {
+            statement.setString(1, email);
 
-        try (ResultSet resultSet = statement.executeQuery()) {
-            if (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String nome = resultSet.getString("nome");
-                int idade = resultSet.getInt("idade");
-                String senha = resultSet.getString("senha");
-                String nivelAcessoStr = resultSet.getString("nivel_acesso");
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String nome = resultSet.getString("nome");
+                    int idade = resultSet.getInt("idade");
+                    String senha = resultSet.getString("senha");
+                    String nivelAcesso = resultSet.getString("nivel_acesso");
 
-                NivelAcesso nivelAcesso = NivelAcesso.valueOf(nivelAcessoStr);
+                    Administrador administrador = new Administrador(nome, "", idade, "", email, senha, nivelAcesso);
+                    administrador.setId(id);
 
-                Administrador administrador = new Administrador(nome, "", idade, "", email, senha, nivelAcesso);
-                administrador.setId(id);
-
-                return administrador;
+                    return administrador;
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
 
-    return null;
-}
+        return null;
+    }
 }

@@ -8,6 +8,7 @@ import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -35,7 +36,6 @@ public class AdminFrame extends JFrame {
     private UsuarioService usuarioService;
     private IUsuarioDAO usuarioDAO;
     private UsuarioController usuarioController;
-    
 
     public AdminFrame(UsuarioService usuarioService, IUsuarioDAO usuarioDAO) {
         this.usuarioService = usuarioService;
@@ -67,7 +67,7 @@ public class AdminFrame extends JFrame {
                 editarUsuario();
             }
         });
-        
+
         removeUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -112,31 +112,30 @@ public class AdminFrame extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    
+
     private void cadastrarUsuario() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(10, 3));
-    
+
         JLabel nomeLabel = new JLabel("Nome:");
         JTextField nomeField = new JTextField();
 
         JLabel telefoneLabel = new JLabel("Telefone:");
         JTextField telefoneField = new JTextField();
-    
+
         JLabel idadeLabel = new JLabel("Idade:");
         JTextField idadeField = new JTextField();
-    
+
         JLabel sexoLabel = new JLabel("Genero:");
         JComboBox<Sexo> sexoComboBox = new JComboBox<>(Sexo.values());
 
-    
         JLabel emailLabel = new JLabel("Email:");
         JTextField emailField = new JTextField();
-    
+
         JLabel senhaLabel = new JLabel("Senha:");
         JTextField senhaField = new JPasswordField();
         JCheckBox mostrarSenhaCheckBox = new JCheckBox("Mostrar Senha");
-    
+
         JButton cadastrarButton = new JButton("Cadastrar");
         JButton voltarButton = new JButton("Voltar");
 
@@ -152,7 +151,6 @@ public class AdminFrame extends JFrame {
                 ((Window) SwingUtilities.getWindowAncestor(panel)).dispose();
             }
         });
-        
 
         cadastrarButton.addActionListener(new ActionListener() {
             @Override
@@ -163,14 +161,14 @@ public class AdminFrame extends JFrame {
                 try {
                     idade = Integer.parseInt(idadeField.getText());
                 } catch (NumberFormatException ex) {
-                    System.out.println("Invalid age format");
+                    System.out.println("Idade inválida");
                     return;
                 }
-                        Sexo sexo = (Sexo) sexoComboBox.getSelectedItem();
+                Sexo sexo = (Sexo) sexoComboBox.getSelectedItem();
 
                 String email = emailField.getText();
                 String senha = senhaField.getText();
-        
+
                 if (usuarioController.cadastrarUsuario(nome, telefone, idade, sexo.name(), email, senha)) {
                     JOptionPane.showMessageDialog(null, "Usuário adicionado com sucesso!");
                     ((Window) SwingUtilities.getWindowAncestor(panel)).dispose();
@@ -180,8 +178,6 @@ public class AdminFrame extends JFrame {
             }
         });
 
-        
-        
         panel.add(nomeLabel);
         panel.add(nomeField);
         panel.add(telefoneLabel);
@@ -199,34 +195,33 @@ public class AdminFrame extends JFrame {
         panel.add(cadastrarButton);
         panel.add(voltarButton);
         JOptionPane.showOptionDialog(
-            null,
-            panel,
-            "Cadastro de Usuário",
-            JOptionPane.DEFAULT_OPTION,
-            JOptionPane.PLAIN_MESSAGE,
-            null,
-            new Object[]{},
-            null
-        );
+                null,
+                panel,
+                "Cadastro de Usuário",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                new Object[] {},
+                null);
     }
-    
+
     private void editarUsuario() {
-         JPanel panel = new JPanel();
+        JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(10, 3));
-    
+
         int userId = Integer.parseInt(JOptionPane.showInputDialog("ID do usuário a ser editado:"));
         Usuario usuario = usuarioDAO.getUsuarioById(userId);
-    
+
         if (usuario != null) {
             JLabel novoNomeLabel = new JLabel("Novo nome:");
             JTextField novoNomeField = new JTextField(usuario.getNome());
-    
+
             JLabel novoTelefoneLabel = new JLabel("Novo telefone:");
             JTextField novoTelefoneField = new JTextField(usuario.getTelefone());
-    
+
             JLabel novaIdadeLabel = new JLabel("Nova idade:");
             JTextField novaIdadeField = new JTextField(String.valueOf(usuario.getIdade()));
-    
+
             JLabel novoSexoLabel = new JLabel("Novo genero:");
             JComboBox<Sexo> novoSexoComboBox = new JComboBox<>(Sexo.values());
 
@@ -235,7 +230,6 @@ public class AdminFrame extends JFrame {
             JButton editarButton = new JButton("Editar");
             JButton voltarButton = new JButton("Voltar");
 
-    
             editarButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -244,9 +238,8 @@ public class AdminFrame extends JFrame {
                     int novaIdade = Integer.parseInt(novaIdadeField.getText());
                     Sexo novoSexo = (Sexo) novoSexoComboBox.getSelectedItem();
 
-                    
-
-                    if (usuarioController.editarUsuario(usuario.getId(), novoNome, novoTelefone, novaIdade, novoSexo.name())) {
+                    if (usuarioController.editarUsuario(usuario.getId(), novoNome, novoTelefone, novaIdade,
+                            novoSexo.name())) {
                         JOptionPane.showMessageDialog(null, "Usuário editado e atualizado com sucesso!");
                         ((Window) SwingUtilities.getWindowAncestor(panel)).dispose();
                     } else {
@@ -256,11 +249,11 @@ public class AdminFrame extends JFrame {
             });
 
             voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((Window) SwingUtilities.getWindowAncestor(panel)).dispose();
-            }
-        });
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ((Window) SwingUtilities.getWindowAncestor(panel)).dispose();
+                }
+            });
             botoesPanel.add(editarButton);
             botoesPanel.add(voltarButton);
             panel.add(novoNomeLabel);
@@ -281,19 +274,18 @@ public class AdminFrame extends JFrame {
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.PLAIN_MESSAGE,
                     null,
-                    new Object[]{},
-                    null
-            );
+                    new Object[] {},
+                    null);
         } else {
             JOptionPane.showMessageDialog(null, "Usuário não encontrado para o ID fornecido.");
             System.out.println("Usuário não encontrado.");
         }
     }
-    
+
     private void removerUsuario() {
         int userId = Integer.parseInt(JOptionPane.showInputDialog("ID do usuário a ser removido:"));
         Usuario usuario = usuarioDAO.getUsuarioById(userId);
-    
+
         if (usuario != null) {
             String mensagemConfirmacao = "Você está prestes a remover o seguinte usuário:\n\n";
             mensagemConfirmacao += "ID: " + usuario.getId() + "\n";
@@ -302,10 +294,11 @@ public class AdminFrame extends JFrame {
             mensagemConfirmacao += "Idade: " + usuario.getIdade() + "\n";
             mensagemConfirmacao += "Sexo: " + usuario.getSexo() + "\n";
             mensagemConfirmacao += "Email: " + usuario.getEmail() + "\n";
-    
+
+            Locale.setDefault(new Locale("pt", "BR"));
             int opcao = JOptionPane.showConfirmDialog(null, mensagemConfirmacao, "Confirmação de Remoção",
                     JOptionPane.YES_NO_OPTION);
-    
+
             if (opcao == JOptionPane.YES_OPTION) {
                 if (usuarioController.removerUsuario(userId)) {
                     JOptionPane.showMessageDialog(null, "Usuário removido com sucesso!");
@@ -323,9 +316,7 @@ public class AdminFrame extends JFrame {
             System.out.println("Usuário não encontrado.");
         }
     }
-    
-    
-    
+
     private void voltarParaLogin() {
         AdminDAO adminDAO = new AdminDAO();
         AdminService registroAdmin = new AdminService(adminDAO);
@@ -337,8 +328,3 @@ public class AdminFrame extends JFrame {
     }
 
 }
-
-
-
-
-

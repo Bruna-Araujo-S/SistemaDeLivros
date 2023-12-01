@@ -169,14 +169,15 @@ public class UserFrame extends JFrame {
                 JOptionPane.PLAIN_MESSAGE, null, new Object[] {}, null);
     }
 
-    private void cadastrarLivroAction(JPanel panel, String title, String author, GeneroLivro genre, String value, String nota) throws NumberFormatException {
+    private void cadastrarLivroAction(JPanel panel, String title, String author, GeneroLivro genre, String value,
+            String nota) throws NumberFormatException {
         try {
             double valor = ConverNum(value);
             int notaInt = Integer.parseInt(nota);
             int idUsuario = SessaoUsuario.getIdUsuario();
-    
+
             Livro novoLivro = new Livro(title, author, genre, valor, notaInt, idUsuario);
-    
+
             if (livroController.cadastrarLivro(title, author, genre, valor, notaInt, idUsuario)) {
                 JOptionPane.showMessageDialog(null, "Livro cadastrado com sucesso!", "Sucesso",
                         JOptionPane.INFORMATION_MESSAGE);
@@ -190,7 +191,7 @@ public class UserFrame extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private void visualizarLivrosOrdenados() {
         JFrame visualizarLivrosFrame = new JFrame("Livros Ordenados");
         visualizarLivrosFrame.setSize(600, 400);
@@ -200,23 +201,33 @@ public class UserFrame extends JFrame {
 
         JTextArea textArea = new JTextArea();
 
-        List<Livro> livrosOrdenados = livroController.visualizarLivrosOrdenadosComMedia();
+        new Thread(() -> {
+            System.out.println("Antes de obter livros ordenados com média.");
+            List<Livro> livrosOrdenados = livroController.visualizarLivrosOrdenadosComMedia();
+            System.out.println("Depois de obter livros ordenados com média.");
 
-        for (Livro livro : livrosOrdenados) {
-            textArea.append("Título: " + livro.getTitulo() + "\n");
-            textArea.append("Autor: " + livro.getAutor() + "\n");
-            textArea.append("Gênero: " + livro.getGenero() + "\n");
-            textArea.append("Média de Avaliações: " + livro.getMediaAvaliacoes() + "\n");
-            textArea.append("Número de Avaliações: " + livro.getNumeroAvaliacoes() + "\n");
-            textArea.append("\n------------------------\n\n");
-        }
+            SwingUtilities.invokeLater(() -> {
+                textArea.setText("");
 
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        panel.add(scrollPane);
+                for (Livro livro : livrosOrdenados) {
+                    textArea.append("Título: " + livro.getTitulo() + "\n");
+                    textArea.append("Autor: " + livro.getAutor() + "\n");
+                    textArea.append("Gênero: " + livro.getGenero() + "\n");
+                    textArea.append("Média de Avaliações: " + livro.getMediaAvaliacoes() + "\n");
+                    textArea.append("Número de Avaliações: " + livro.getNumeroAvaliacoes() + "\n");
+                    textArea.append("\n------------------------\n\n");
+                }
 
-        visualizarLivrosFrame.add(panel);
-        visualizarLivrosFrame.setLocationRelativeTo(null);
-        visualizarLivrosFrame.setVisible(true);
+                panel.add(new JScrollPane(textArea));
+
+                visualizarLivrosFrame.add(panel);
+
+                visualizarLivrosFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                visualizarLivrosFrame.setLocationRelativeTo(null);
+                visualizarLivrosFrame.setVisible(true);
+            });
+
+        }).start();
     }
 
     private void avaliarLivros() {
@@ -224,7 +235,8 @@ public class UserFrame extends JFrame {
         panel.setLayout(new GridLayout(10, 20));
 
         JLabel livroLabel = new JLabel("Escolha um livro para avaliar:");
-        JComboBox<Livro> livroComboBox = new JComboBox<>(livroController.visualizarLivrosOrdenadosComMedia().toArray(new Livro[0]));
+        JComboBox<Livro> livroComboBox = new JComboBox<>(
+                livroController.visualizarLivrosOrdenadosComMedia().toArray(new Livro[0]));
         livroComboBox.setRenderer(getLivroListCellRenderer());
 
         JButton verInfoButton = new JButton("Ver Informações");
@@ -293,11 +305,12 @@ public class UserFrame extends JFrame {
         if (result == 0) {
         }
     }
-private DefaultListCellRenderer getLivroListCellRenderer() {
+
+    private DefaultListCellRenderer getLivroListCellRenderer() {
         return new DefaultListCellRenderer() {
-           @Override
+            @Override
             public java.awt.Component getListCellRendererComponent(javax.swing.JList<?> list, Object value, int index,
-                            boolean isSelected, boolean cellHasFocus) {
+                    boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof Livro) {
                     Livro livro = (Livro) value;
@@ -306,9 +319,7 @@ private DefaultListCellRenderer getLivroListCellRenderer() {
                 return this;
             }
         };
-     }
-
-    
+    }
 
     private boolean avaliacaoValida(Livro livro, Usuario usuario, int novaNota) {
         if (!livro.jaFoiAvaliado(usuario.getId())) {
@@ -346,7 +357,6 @@ private DefaultListCellRenderer getLivroListCellRenderer() {
         str = str.replace(",", ".");
         return Double.parseDouble(str);
     }
-    
 
     private void voltarParaLogin() {
         AdminDAO adminDAO = new AdminDAO();

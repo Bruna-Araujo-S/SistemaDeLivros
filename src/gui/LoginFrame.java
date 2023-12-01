@@ -28,7 +28,6 @@ import models.Administrador;
 import models.Usuario;
 import services.AdminService;
 
-
 public class LoginFrame extends JFrame {
 
     private AdminService registroAdministrador;
@@ -39,13 +38,14 @@ public class LoginFrame extends JFrame {
     private IUsuarioDAO usuarioDAO;
     private IAdminDAO adminDAO;
 
-    public LoginFrame(AdminService registroAdministrador, ILivroDAO livroDAO, IUsuarioDAO usuarioDAO, IAdminDAO adminDAO) {
+    public LoginFrame(AdminService registroAdministrador, ILivroDAO livroDAO, IUsuarioDAO usuarioDAO,
+            IAdminDAO adminDAO) {
         this.registroAdministrador = registroAdministrador;
         this.livroDAO = livroDAO;
         this.usuarioDAO = usuarioDAO;
         this.adminDAO = adminDAO;
         this.autenticarUsuario = new AutenticarUsuario();
-        this.autenticarUsuario.estabelecerConexao("jdbc:mysql://localhost:3306/Sistema_de_Livros", "root", "user");
+        this.autenticarUsuario.estabelecerConexao("jdbc:mysql://localhost:3306/Sistema_de_Livro", "root", "root");
 
         setTitle("Acessar Sistema de Livros");
         setSize(450, 200);
@@ -91,22 +91,21 @@ public class LoginFrame extends JFrame {
                     return;
                 }
 
-                
-        boolean autenticado = false;
+                boolean autenticado = false;
 
-        if ("Administrador".equals(userType)) {
-            autenticado = autenticarUsuario.autenticarAdministrador(email, senha);
-        } else if ("Comum".equals(userType)) {
-            autenticado = autenticarUsuario.autenticarUsuario(email, senha);
-        }
+                if ("Administrador".equals(userType)) {
+                    autenticado = autenticarUsuario.autenticarAdministrador(email, senha);
+                } else if ("Comum".equals(userType)) {
+                    autenticado = autenticarUsuario.autenticarUsuario(email, senha);
+                }
 
-        if (autenticado) {
-            processarLogin(email, userType);
-        } else {
-            exibirMensagemErro("Email ou senha inválidos. Tente novamente.");
-        }
-    }
-});
+                if (autenticado) {
+                    processarLogin(email, userType);
+                } else {
+                    exibirMensagemErro("Email ou senha inválidos. Tente novamente.");
+                }
+            }
+        });
         JPanel inputPanel = new JPanel();
         inputPanel.setOpaque(false);
         inputPanel.setLayout(new GridLayout(4, 8, 6, 6));
@@ -135,7 +134,6 @@ public class LoginFrame extends JFrame {
 
         backgroundLabel.add(formPanel, BorderLayout.CENTER);
 
-
         Font font = emailField.getFont();
         emailField.setFont(new Font(font.getName(), font.getStyle(), 16));
 
@@ -163,7 +161,7 @@ public class LoginFrame extends JFrame {
             }
         }
     }
-    
+
     private void exibirMensagemErro(String mensagem) {
         JOptionPane.showMessageDialog(LoginFrame.this, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
     }
@@ -173,8 +171,8 @@ public class LoginFrame extends JFrame {
         AdminService adminService = new AdminService(adminDAO);
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         LivroDAO livroDAO = new LivroDAO();
-    
+
         new LoginFrame(adminService, livroDAO, usuarioDAO, adminDAO);
     }
-    
+
 }

@@ -18,7 +18,6 @@ public class Usuario {
         this.telefone = telefone;
         this.idade = idade;
         this.sexo = sexo;
-        this.tiposLivrosPreferidos = new HashSet<>();
         this.senha = senha;
         this.email = email;
         this.id = proximoId++;
@@ -29,7 +28,6 @@ public class Usuario {
         this.telefone = telefone;
         this.idade = idade;
         this.sexo = sexo;
-        this.tiposLivrosPreferidos = new HashSet<>();
         this.senha = senha;
         this.email = email;
         this.id = id;
@@ -95,18 +93,6 @@ public class Usuario {
         this.sexo = sexo;
     }
 
-    public void adicionarTipoLivroPreferido(String tipoLivro) {
-        this.tiposLivrosPreferidos.add(tipoLivro);
-    }
-
-    public void removerTipoLivroPreferido(String tipoLivro) {
-        this.tiposLivrosPreferidos.remove(tipoLivro);
-    }
-
-    public Set<String> getTiposLivrosPreferidos() {
-        return tiposLivrosPreferidos;
-    }
-
     @Override
     public String toString() {
         return "Usuario{" +
@@ -114,7 +100,6 @@ public class Usuario {
                 ", telefone='" + telefone + '\'' +
                 ", sexo='" + sexo + '\'' +
                 ", idade=" + idade +
-                ", tiposLivrosPreferidos=" + tiposLivrosPreferidos +
                 '}';
     }
 

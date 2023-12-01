@@ -8,10 +8,9 @@ import interfaces.gerenciamento.IAdminDAO;
 import interfaces.gerenciamento.IAdminService;
 import models.Administrador;
 
-
 public class AdminService implements IAdminService {
 
-     private IAdminDAO adminDAO;
+    private IAdminDAO adminDAO;
 
     private List<Administrador> administradores;
 
@@ -22,11 +21,11 @@ public class AdminService implements IAdminService {
 
     public boolean adicionarAdministrador(Administrador administrador, String senha) {
         administrador.definirSenha(senha);
-        administrador.setNivelAcesso(NivelAcesso.ADMIN);
-    
+        administrador.setNivelAcesso(senha);
+
         return adminDAO.salvarNoBancoDeDados(administrador, senha);
     }
-    
+
     public Administrador getAdministradorByEmail(String email) {
         return adminDAO.getAdministradorByEmail(email);
     }

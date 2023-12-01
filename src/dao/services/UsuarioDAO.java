@@ -12,9 +12,9 @@ import models.Usuario;
 
 public class UsuarioDAO implements IUsuarioDAO {
 
-    private String url = "jdbc:mysql://localhost:3306/Sistema_de_Livros";
-    private String usuario = "root";
-    private String senhaDB = "user";
+    String url = "jdbc:mysql://localhost:3306/Sistema_de_Livro";
+    String usuario = "root";
+    String senhaDB = "root";
 
     @Override
     public Usuario getUsuarioByEmail(String email) {
@@ -97,9 +97,8 @@ public class UsuarioDAO implements IUsuarioDAO {
         connectionSQL.OpenDatabase();
 
         String query = String.format(
-    "UPDATE usuarios SET nome='%s', telefone='%s', idade=%d, sexo='%s' WHERE id=%d",
-    novoNome, novoTelefone, novaIdade, novoSexo, id);
-
+                "UPDATE usuarios SET nome='%s', telefone='%s', idade=%d, sexo='%s' WHERE id=%d",
+                novoNome, novoTelefone, novaIdade, novoSexo, id);
 
         try {
             connectionSQL.ExecutaUpdate(query);
