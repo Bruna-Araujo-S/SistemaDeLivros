@@ -30,8 +30,9 @@ public class UsuarioDAO implements IUsuarioDAO {
                     String sexo = resultSet.getString("sexo");
                     String senha = resultSet.getString("senha");
                     String telefone = resultSet.getString("telefone");
+                    String nivelAcesso = resultSet.getString("nivel_acesso");
 
-                    Usuario useUsuario = new Usuario(nome, email, senha, telefone, idade, sexo);
+                    Usuario useUsuario = new Usuario(nome, email, senha, telefone, idade, sexo, nivelAcesso);
                     useUsuario.setId(id);
                     return useUsuario;
                 }
@@ -57,8 +58,9 @@ public class UsuarioDAO implements IUsuarioDAO {
                 int idade = resultSet.getInt("idade");
                 String sexo = resultSet.getString("sexo");
                 String senha = resultSet.getString("senha");
+                String nivelAcesso = resultSet.getString("nivel_acesso");
 
-                Usuario usuario = new Usuario(nome, null, senha, telefone, idade, sexo);
+                Usuario usuario = new Usuario(nome, null, senha, telefone, idade, sexo, nivelAcesso);
                 usuario.setId(id);
 
                 return usuario;
@@ -75,15 +77,20 @@ public class UsuarioDAO implements IUsuarioDAO {
         ConnectionSQL connectionSQL = new ConnectionSQL();
         connectionSQL.OpenDatabase();
 
-        String query = String.format(
-                "INSERT INTO usuarios (nome, telefone, idade, sexo, email, senha) VALUES ('%s', '%s', %d, '%s', '%s', '%s')",
-                usuario.getNome(), usuario.getTelefone(), usuario.getIdade(), usuario.getSexo(), usuario.getEmail(),
-                usuario.getSenha());
+        String query = "INSERT INTO usuarios (nome, telefone, idade, sexo, nivel_acesso, email, senha) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try {
-            connectionSQL.ExecutaUpdate(query);
+        try (PreparedStatement preparedStatement = connectionSQL.getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, usuario.getNome());
+            preparedStatement.setString(2, usuario.getTelefone());
+            preparedStatement.setInt(3, usuario.getIdade());
+            preparedStatement.setString(4, usuario.getSexo());
+            preparedStatement.setString(5, usuario.getNivelAcesso());
+            preparedStatement.setString(6, usuario.getEmail());
+            preparedStatement.setString(7, usuario.getSenha());
+
+            preparedStatement.executeUpdate();
             System.out.println("Usuário adicionado ao banco de dados com sucesso!");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Erro ao adicionar usuário ao banco de dados: " + e.getMessage());
         } finally {

@@ -17,14 +17,15 @@ public class UsuarioController {
         this.usuarioDAO = usuarioDAO;
     }
 
-    public boolean cadastrarUsuario(String nome, String telefone, int idade, String sexo, String email, String senha) {
+    public boolean cadastrarUsuario(String nome, String telefone, int idade, String sexo, String email, String senha,
+            String nivelAcesso) {
         ValidarCadastroUsuario validador = new ValidarCadastroUsuario();
 
         if (validador.validarNome(nome) && validador.validarTelefone(telefone) &&
                 validador.validarEmail(email) && validador.validarSenha(senha)) {
 
             String hashedSenha = BCrypt.hashpw(senha, BCrypt.gensalt());
-            Usuario novoUsuario = new Usuario(nome, email, hashedSenha, telefone, idade, sexo);
+            Usuario novoUsuario = new Usuario(nome, email, hashedSenha, telefone, idade, sexo, nivelAcesso);
 
             if (usuarioService.cadastrarUsuario(novoUsuario)) {
                 return true;

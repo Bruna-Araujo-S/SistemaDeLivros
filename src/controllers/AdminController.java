@@ -2,7 +2,6 @@ package controllers;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import enums.NivelAcesso;
 import interfaces.gerenciamento.IAdminDAO;
 import models.Administrador;
 

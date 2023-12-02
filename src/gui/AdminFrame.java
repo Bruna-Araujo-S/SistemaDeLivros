@@ -115,7 +115,7 @@ public class AdminFrame extends JFrame {
 
     private void cadastrarUsuario() {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(10, 3));
+        panel.setLayout(new GridLayout(11, 3));
 
         JLabel nomeLabel = new JLabel("Nome:");
         JTextField nomeField = new JTextField();
@@ -128,6 +128,9 @@ public class AdminFrame extends JFrame {
 
         JLabel sexoLabel = new JLabel("Genero:");
         JComboBox<Sexo> sexoComboBox = new JComboBox<>(Sexo.values());
+
+        JLabel nivelAcessoLabel = new JLabel("Nível de Acesso:");
+        JComboBox<String> nivelAcessoComboBox = new JComboBox<>(new String[] { "COMUM" });
 
         JLabel emailLabel = new JLabel("Email:");
         JTextField emailField = new JTextField();
@@ -168,8 +171,9 @@ public class AdminFrame extends JFrame {
 
                 String email = emailField.getText();
                 String senha = senhaField.getText();
+                String nivelAcesso = (String) nivelAcessoComboBox.getSelectedItem();
 
-                if (usuarioController.cadastrarUsuario(nome, telefone, idade, sexo.name(), email, senha)) {
+                if (usuarioController.cadastrarUsuario(nome, telefone, idade, sexo.name(), email, senha, nivelAcesso)) {
                     JOptionPane.showMessageDialog(null, "Usuário adicionado com sucesso!");
                     ((Window) SwingUtilities.getWindowAncestor(panel)).dispose();
                 } else {
@@ -186,6 +190,8 @@ public class AdminFrame extends JFrame {
         panel.add(idadeField);
         panel.add(sexoLabel);
         panel.add(sexoComboBox);
+        panel.add(nivelAcessoLabel);
+        panel.add(nivelAcessoComboBox);
         panel.add(emailLabel);
         panel.add(emailField);
         panel.add(senhaLabel);
@@ -293,7 +299,6 @@ public class AdminFrame extends JFrame {
             mensagemConfirmacao += "Telefone: " + usuario.getTelefone() + "\n";
             mensagemConfirmacao += "Idade: " + usuario.getIdade() + "\n";
             mensagemConfirmacao += "Sexo: " + usuario.getSexo() + "\n";
-            mensagemConfirmacao += "Email: " + usuario.getEmail() + "\n";
 
             Locale.setDefault(new Locale("pt", "BR"));
             int opcao = JOptionPane.showConfirmDialog(null, mensagemConfirmacao, "Confirmação de Remoção",

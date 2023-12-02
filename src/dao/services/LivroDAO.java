@@ -141,8 +141,9 @@ public class LivroDAO implements ILivroDAO {
                     String telefone = resultSet.getString("telefone");
                     int idade = resultSet.getInt("idade");
                     String sexo = resultSet.getString("sexo");
+                    String nivelAcesso = resultSet.getString("nivel_acesso");
 
-                    return new Usuario(nome, emailUsuario, senha, telefone, idade, sexo, id);
+                    return new Usuario(nivelAcesso, nome, emailUsuario, senha, telefone, idade, sexo, id);
                 }
             }
 

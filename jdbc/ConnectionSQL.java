@@ -14,6 +14,7 @@ public class ConnectionSQL {
 
     private Connection dbconn = null;
     private Statement sqlmgr = null;
+    private Connection connection;
 
     public void OpenDatabase() {
         try {
@@ -23,6 +24,10 @@ public class ConnectionSQL {
         } catch (Exception Error) {
             System.out.println("Error on Connect: " + Error.getMessage());
         }
+    }
+
+    public Connection getConnection() {
+        return dbconn;
     }
 
     public void CloseDatabase() {

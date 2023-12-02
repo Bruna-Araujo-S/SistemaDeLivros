@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import enums.NivelAcesso;
 import models.Administrador;
 import models.Usuario;
 import util.SessaoUsuario;
@@ -96,8 +95,9 @@ public class AutenticarUsuario {
                     String telefone = resultSet.getString("telefone");
                     int idade = resultSet.getInt("idade");
                     String sexo = resultSet.getString("sexo");
+                    String nivelAcesso = resultSet.getString("nivel_acesso");
 
-                    return new Usuario(nome, email, senha, telefone, idade, sexo, id);
+                    return new Usuario(nivelAcesso, nome, email, senha, telefone, idade, sexo, id);
                 }
             }
         } catch (SQLException e) {

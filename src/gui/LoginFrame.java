@@ -47,7 +47,7 @@ public class LoginFrame extends JFrame {
         this.autenticarUsuario = new AutenticarUsuario();
         this.autenticarUsuario.estabelecerConexao("jdbc:mysql://localhost:3306/Sistema_de_Livro", "root", "root");
 
-        setTitle("Acessar Sistema de Livros");
+        setTitle("Acessar Book Library");
         setSize(450, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

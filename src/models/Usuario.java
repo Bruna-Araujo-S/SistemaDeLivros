@@ -1,19 +1,17 @@
 package models;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Usuario {
 
     private String nome, telefone, sexo;
     private int idade;
-    private Set<String> tiposLivrosPreferidos;
     private String senha;
     private String email;
     private static int proximoId = 1;
     private int id;
+    private String nivelAcesso;
 
-    public Usuario(String nome, String email, String senha, String telefone, int idade, String sexo) {
+    public Usuario(String nome, String email, String senha, String telefone, int idade, String sexo,
+            String nivelAcesso) {
         this.nome = nome;
         this.telefone = telefone;
         this.idade = idade;
@@ -21,9 +19,11 @@ public class Usuario {
         this.senha = senha;
         this.email = email;
         this.id = proximoId++;
+        this.nivelAcesso = nivelAcesso;
     }
 
-    public Usuario(String nome, String email, String senha, String telefone, int idade, String sexo, int id) {
+    public Usuario(String nivelAcesso, String nome, String email, String senha, String telefone, int idade, String sexo,
+            int id) {
         this.nome = nome;
         this.telefone = telefone;
         this.idade = idade;
@@ -31,6 +31,8 @@ public class Usuario {
         this.senha = senha;
         this.email = email;
         this.id = id;
+        this.nivelAcesso = nivelAcesso;
+
     }
 
     public int getId() {
@@ -93,14 +95,12 @@ public class Usuario {
         this.sexo = sexo;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "nome='" + nome + '\'' +
-                ", telefone='" + telefone + '\'' +
-                ", sexo='" + sexo + '\'' +
-                ", idade=" + idade +
-                '}';
+    public String getNivelAcesso() {
+        return nivelAcesso;
+    }
+
+    public void setNivelAcesso(String nivelAcesso) {
+        this.nivelAcesso = nivelAcesso;
     }
 
 }

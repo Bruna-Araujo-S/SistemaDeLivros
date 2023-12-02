@@ -3,7 +3,6 @@ package models;
 import org.mindrot.jbcrypt.BCrypt;
 
 import dao.services.UsuarioDAO;
-import enums.NivelAcesso;
 import interfaces.gerenciamento.IUsuarioDAO;
 import services.UsuarioService;
 
@@ -18,7 +17,7 @@ public class Administrador extends Usuario {
 
     public Administrador(String nome, String telefone, int idade, String sexo, String email, String senha,
             String nivelAcesso) {
-        super(nome, telefone, email, senha, idade, sexo);
+        super(nome, telefone, email, senha, idade, sexo, nivelAcesso);
         this.email = email;
         this.senha = senha;
         this.nivelAcesso = nivelAcesso;

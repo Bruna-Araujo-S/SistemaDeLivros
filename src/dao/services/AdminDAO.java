@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import enums.NivelAcesso;
 import interfaces.gerenciamento.IAdminDAO;
 import models.Administrador;
 
@@ -28,6 +27,7 @@ public class AdminDAO implements IAdminDAO {
                 preparedStatement.setString(1, administrador.getNome());
                 preparedStatement.setString(2, administrador.getEmail());
                 preparedStatement.setInt(3, administrador.getIdade());
+                preparedStatement.setString(2, administrador.getNivelAcesso());
 
                 String hashedSenha = BCrypt.hashpw(administrador.getSenha(), BCrypt.gensalt());
                 preparedStatement.setString(4, hashedSenha);
