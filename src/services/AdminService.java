@@ -3,7 +3,6 @@ package services;
 import java.util.ArrayList;
 import java.util.List;
 
-import enums.NivelAcesso;
 import interfaces.gerenciamento.IAdminDAO;
 import interfaces.gerenciamento.IAdminService;
 import models.Administrador;

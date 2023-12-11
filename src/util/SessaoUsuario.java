@@ -13,7 +13,6 @@ public class SessaoUsuario {
         return usuarioLogado;
     }
 
-    
     public static int getIdUsuario() {
         if (usuarioLogado != null) {
             return usuarioLogado.getId();

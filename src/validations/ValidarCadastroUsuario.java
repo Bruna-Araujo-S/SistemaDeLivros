@@ -26,7 +26,7 @@ public class ValidarCadastroUsuario {
 
     public boolean validarTelefone(String telefone) {
         String regex = "^[0-9]{2}[-]?[0-9]{9}$";
-    
+
         if (telefone.matches(regex)) {
             return true;
         } else {
@@ -34,6 +34,7 @@ public class ValidarCadastroUsuario {
             return false;
         }
     }
+
     public boolean validarIdade(int idade) {
         if (idade > 13) {
             return true;
@@ -57,7 +58,5 @@ public class ValidarCadastroUsuario {
     private void exibirMensagemErro(String mensagem) {
         JOptionPane.showMessageDialog(null, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
     }
-
-   
 
 }
